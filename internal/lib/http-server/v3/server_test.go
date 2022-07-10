@@ -55,6 +55,15 @@ func TestGETPlayer(t *testing.T) {
 		assertStatusCode(t, got, want)
 		assertResponseBody(t, response.Body.String(), "")
 	})
+
+	t.Run("Возвращает результат метода POST", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodPost, "/players/Pepper", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatusCode(t, response.Code, http.StatusAccepted)
+	})
 }
 
 func newGetScoreRequest(name string) *http.Request {
