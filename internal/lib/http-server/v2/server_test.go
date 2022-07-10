@@ -40,6 +40,20 @@ func TestGETPlayer(t *testing.T) {
 
 		assertResponseBody(t, got, want)
 	})
+
+	t.Run("Возврат кода 404 для отсутвующих игроков", func(t *testing.T) {
+		request := newGetScoreRequest("Apple")
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		got := response.Code
+		want := http.StatusNotFound
+
+		if got != want {
+			t.Errorf("status code: got %d, want %d", got, want)
+		}
+	})
 }
 
 func newGetScoreRequest(name string) *http.Request {
