@@ -1,4 +1,4 @@
-package v1
+package v2
 
 import (
 	"fmt"
@@ -6,12 +6,14 @@ import (
 	"strings"
 )
 
+// PlayerStore stores score information about players.
 type PlayerStore interface {
 	GetPlayerScore(name string) string
 }
 
+// PlayerServer is a HTTP interface for player information.
 type PlayerServer struct {
-	store PlayerStore
+	Store PlayerStore
 }
 
 func (s *PlayerServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {

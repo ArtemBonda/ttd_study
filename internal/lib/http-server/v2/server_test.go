@@ -1,4 +1,4 @@
-package v1
+package v2
 
 import (
 	"fmt"
@@ -8,7 +8,15 @@ import (
 )
 
 func TestGETPlayer(t *testing.T) {
-	server := &PlayerServer{}
+	store := StubPlayerStore{
+		map[string]string{
+			"Pepper": "10",
+			"Floyd":  "20",
+		},
+	}
+
+	server := &PlayerServer{
+		Store: &store}
 
 	t.Run("returns Pepper's score", func(t *testing.T) {
 		request := newGetScoreRequest("Pepper")
@@ -47,10 +55,10 @@ func assertResponseBody(t testing.TB, got, want string) {
 }
 
 type StubPlayerStore struct {
-	scores map[string]int
+	scores map[string]string
 }
 
-func (s StubPlayerStore) GetPlayerScore(name string) int {
+func (s *StubPlayerStore) GetPlayerScore(name string) string {
 	score := s.scores[name]
 	return score
 }
