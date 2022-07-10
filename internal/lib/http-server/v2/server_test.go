@@ -10,8 +10,8 @@ import (
 func TestGETPlayer(t *testing.T) {
 	store := StubPlayerStore{
 		map[string]string{
-			"Pepper": "10",
-			"Floyd":  "20",
+			"Pepper": "20",
+			"Floyd":  "10",
 		},
 	}
 
