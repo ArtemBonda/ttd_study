@@ -3,8 +3,19 @@ package v1
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 func PlayServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "20")
+	player := strings.TrimPrefix(r.URL.Path, "/players/")
+
+	if player == "Pepper" {
+		fmt.Fprint(w, "20")
+		return
+	}
+
+	if player == "Floyd" {
+		fmt.Fprint(w, "10")
+		return
+	}
 }
