@@ -26,6 +26,7 @@ func TestGETPlayer(t *testing.T) {
 		got := response.Body.String()
 		want := "20"
 
+		assertStatusCode(t, response.Code, http.StatusOK)
 		assertResponseBody(t, got, want)
 	})
 
@@ -38,10 +39,11 @@ func TestGETPlayer(t *testing.T) {
 		got := response.Body.String()
 		want := "10"
 
+		assertStatusCode(t, response.Code, http.StatusOK)
 		assertResponseBody(t, got, want)
 	})
 
-	t.Run("Возврат кода 404 для отсутвующих игроков", func(t *testing.T) {
+	t.Run("Возврат кода 404 для отсутствующих игроков", func(t *testing.T) {
 		request := newGetScoreRequest("Apple")
 		response := httptest.NewRecorder()
 
@@ -50,9 +52,8 @@ func TestGETPlayer(t *testing.T) {
 		got := response.Code
 		want := http.StatusNotFound
 
-		if got != want {
-			t.Errorf("status code: got %d, want %d", got, want)
-		}
+		assertStatusCode(t, got, want)
+		assertResponseBody(t, response.Body.String(), "")
 	})
 }
 
@@ -66,6 +67,14 @@ func assertResponseBody(t testing.TB, got, want string) {
 	if got != want {
 		t.Errorf("Response body is wrong, got %q, want %q", got, want)
 	}
+}
+
+func assertStatusCode(t testing.TB, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Errorf("status code: got %d, want %d", got, want)
+	}
+
 }
 
 type StubPlayerStore struct {
