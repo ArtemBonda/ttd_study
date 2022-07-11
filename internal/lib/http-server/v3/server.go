@@ -38,7 +38,8 @@ func (s *PlayerServer) ShowScore(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *PlayerServer) processWin(w http.ResponseWriter, r *http.Request) {
-	s.Store.RecordWin("Bob")
+	player := strings.TrimPrefix(r.URL.Path, "/players/")
+	s.Store.RecordWin(player)
 	w.WriteHeader(http.StatusAccepted)
 }
 
