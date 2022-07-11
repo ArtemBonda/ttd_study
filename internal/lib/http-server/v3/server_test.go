@@ -89,6 +89,7 @@ func TestStoreWins(t *testing.T) {
 	server := PlayerServer{store}
 
 	t.Run("запись выигрыша при публикации", func(t *testing.T) {
+		player := "Pepper"
 		request := newPostWinRequest("Pepper")
 		response := httptest.NewRecorder()
 
@@ -97,6 +98,10 @@ func TestStoreWins(t *testing.T) {
 		assertStatusCode(t, response.Code, http.StatusAccepted)
 		if len(store.winCalls) != 1 {
 			t.Errorf("got %d calls to RecordWin want %d ", len(store.winCalls), 1)
+		}
+
+		if store.winCalls[0] != player {
+			t.Errorf("do not store correct winner got %q, want %q", store.winCalls[0], player)
 		}
 	})
 }
